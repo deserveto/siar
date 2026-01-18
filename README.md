@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">🏢 SIAR Dashboard</h1>
+  <h1 align="center">SIAR Dashboard</h1>
   <p align="center">
     <strong>Sistem Informasi Asuransi Ramayana</strong>
   </p>
@@ -18,24 +18,24 @@
 
 ---
 
-## ✨ Features
+## Features
 
 | Feature | Description |
 |---------|-------------|
-| 🔐 **Authentication** | Secure login & registration with NextAuth.js |
-| 📊 **Dashboard** | Overview of all activities with statistics |
-| 🔧 **Maintenance** | Track and manage IT maintenance requests |
-| 📁 **Projects** | Manage project requests and submissions |
-| 📅 **Calendar** | Event scheduling and deadline tracking |
-| 💬 **Chat** | Internal messaging between IT and staff |
-| 📋 **Activity Logs** | Track all user activities (IT Admin only) |
-| 👤 **Profile Management** | Update profile and upload profile pictures |
-| 🎨 **Theme System** | Dark/Light mode with accent color picker |
-| 🔔 **Notifications** | Real-time notification system |
+| **Authentication** | Secure login & registration with NextAuth.js |
+| **Dashboard** | Overview of all activities with statistics |
+| **Maintenance** | Track and manage IT maintenance requests |
+| **Projects** | Manage project requests and submissions |
+| **Calendar** | Event scheduling and deadline tracking |
+| **Chat** | Internal messaging between IT and staff |
+| **Activity Logs** | Track all user activities (IT Admin only) |
+| **Profile Management** | Update profile and upload profile pictures |
+| **Theme System** | Dark/Light mode with accent color picker |
+| **Notifications** | Real-time notification system |
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework:** [Next.js 16](https://nextjs.org/) (App Router)
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
@@ -48,7 +48,7 @@
 
 ---
 
-## 📋 Prerequisites
+## Prerequisites
 
 Before you begin, ensure you have the following installed:
 
@@ -58,7 +58,7 @@ Before you begin, ensure you have the following installed:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Clone the Repository
 
@@ -92,7 +92,7 @@ NEXTAUTH_SECRET="your-secure-secret-key"
 NEXTAUTH_URL="http://localhost:3000"
 ```
 
-> 💡 **Tip:** Generate a secure secret with: `npx auth secret`
+> **Tip:** Generate a secure secret with: `npx auth secret`
 
 ### 4. Create MySQL Database
 
@@ -129,20 +129,20 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🔑 Default Accounts
+## Default Accounts
 
 After running the seed command, you can login with these accounts:
 
 | Role | Email | Password |
 |------|-------|----------|
-| 🔧 **IT Admin** | `admin@ramayana.co.id` | `password123` |
-| 👤 **Staff** | `staff@ramayana.co.id` | `password123` |
+| **IT Admin** | `admin@ramayana.co.id` | `password123` |
+| **Staff** | `staff@ramayana.co.id` | `password123` |
 
-> ⚠️ **Important:** Change these passwords in production!
+> **Important:** Change these passwords in production!
 
 ---
 
-## 📜 Available Scripts
+## Available Scripts
 
 | Command | Description |
 |---------|-------------|
@@ -157,7 +157,7 @@ After running the seed command, you can login with these accounts:
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 siar-dashboard/
@@ -185,7 +185,7 @@ siar-dashboard/
 
 ---
 
-## 🎨 User Roles
+## User Roles
 
 ### IT Admin
 - Full access to all features
@@ -202,41 +202,3 @@ siar-dashboard/
 - View personal notifications
 
 ---
-
-## 📱 Screenshots
-
-<!-- Add screenshots of your application here -->
-<!-- ![Dashboard](screenshots/dashboard.png) -->
-<!-- ![Login Page](screenshots/login.png) -->
-
-*Screenshots coming soon...*
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is proprietary software for PT Asuransi Ramayana Tbk.
-
----
-
-## 📞 Support
-
-For support, please contact the IT Department.
-
----
-
-<p align="center">
-  Made with ❤️ by IT Department
-  <br />
-  © 2026 PT Asuransi Ramayana Tbk. All rights reserved.
-</p>
