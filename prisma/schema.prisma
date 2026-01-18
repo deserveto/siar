@@ -1,0 +1,250 @@
+// Prisma Schema for SIAR Dashboard - Phase 2
+// Database: MySQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER & AUTHENTICATION
+// ============================================
+
+model User {
+  id           Int      @id @default(autoincrement())
+  nomor_id     String   @unique @db.VarChar(50)
+  nama_lengkap String   @db.VarChar(255)
+  email        String   @unique @db.VarChar(255)
+  password     String   @db.VarChar(255)
+  divisi       String   @db.VarChar(100)
+  cabang       String   @db.VarChar(100)
+  role         String   @default("NON_IT") @db.VarChar(20)
+  profile_picture String? @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  maintenanceIssues MaintenanceIssue[]
+  projectItems      ProjectItem[]
+  events            Event[]
+  logs              Log[]
+  modules           Module[]
+  notifications     Notification[]
+  sentMessages      Message[]        @relation("SentMessages")
+  receivedMessages  Message[]        @relation("ReceivedMessages")
+
+  @@index([email])
+  @@index([role])
+}
+
+// ============================================
+// REFERENCE TABLES
+// ============================================
+
+model Division {
+  name String @id @db.VarChar(100)
+  code String @db.VarChar(10)
+}
+
+model Branch {
+  name String @id @db.VarChar(100)
+}
+
+// ============================================
+// MODULES & ATTACHMENTS
+// ============================================
+
+model Module {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(255)
+  description String   @db.Text
+  status      Boolean  @default(true)
+  createdById Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  createdBy   User         @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  attachments Attachment[]
+
+  @@index([createdById])
+}
+
+model Attachment {
+  id        Int      @id @default(autoincrement())
+  moduleId  Int
+  type      String   @db.VarChar(50)
+  name      String   @db.VarChar(255)
+  url       String?  @db.VarChar(500)
+  size      String?  @db.VarChar(50)
+  createdAt DateTime @default(now())
+
+  // Relations
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@index([moduleId])
+}
+
+// ============================================
+// FILE ATTACHMENTS (Generic for any entity)
+// ============================================
+
+model FileUpload {
+  id           Int      @id @default(autoincrement())
+  entityType   String   @db.VarChar(50) // "maintenance", "project", "chat"
+  entityId     Int
+  fileName     String   @db.VarChar(255)
+  fileType     String   @db.VarChar(100)
+  fileSize     Int
+  filePath     String   @db.VarChar(500)
+  uploadedById Int
+  createdAt    DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([uploadedById])
+}
+
+// ============================================
+// MAINTENANCE ISSUES
+// ============================================
+
+model MaintenanceIssue {
+  id            Int       @id @default(autoincrement())
+  kategori      String    @db.VarChar(100)
+  otherKategori String?   @db.VarChar(255) // Custom category if "Other" selected
+  jenis_masalah String    @db.VarChar(255)
+  deskripsi     String    @db.Text
+  status        String    @default("PENDING") @db.VarChar(50)
+  deadline      DateTime? @db.Date
+  userId        Int
+  date          DateTime  @default(now())
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([deadline])
+}
+
+// ============================================
+// PROJECT ITEMS
+// ============================================
+
+model ProjectItem {
+  id          Int       @id @default(autoincrement())
+  title       String    @db.VarChar(255)
+  description String    @db.Text
+  fileOrLink  String?   @db.VarChar(500)
+  deadline    DateTime? @db.Date
+  status      String    @default("PENDING") @db.VarChar(50)
+  resultType  String?   @db.VarChar(20) // "LINK" or "FILE"
+  resultValue String?   @db.VarChar(500)
+  resultName  String?   @db.VarChar(255)
+  date        DateTime  @default(now())
+  userId      Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([deadline])
+}
+
+// ============================================
+// CALENDAR EVENTS
+// ============================================
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @db.Date
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  color       String   @default("blue") @db.VarChar(50)
+  eventType   String   @default("custom") @db.VarChar(50) // custom, deadline_maintenance, deadline_project
+  referenceId Int?     // ID of related maintenance/project
+  userId      Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([date])
+  @@index([eventType])
+}
+
+// ============================================
+// NOTIFICATIONS
+// ============================================
+
+model Notification {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  type        String   @db.VarChar(50) // project_status, maintenance_status, chat, etc.
+  title       String   @db.VarChar(255)
+  message     String   @db.Text
+  isRead      Boolean  @default(false)
+  referenceId Int?     // ID of related entity
+  createdAt   DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+// ============================================
+// CHAT / MESSAGING
+// ============================================
+
+model Message {
+  id          Int      @id @default(autoincrement())
+  senderId    Int
+  receiverId  Int
+  content     String   @db.Text
+  subjectType String?  @db.VarChar(50) // "maintenance", "project", null
+  subjectId   Int?     // ID of related maintenance/project
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  // Relations
+  sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([createdAt])
+}
+
+// ============================================
+// ACTIVITY LOGS
+// ============================================
+
+model Log {
+  id          Int      @id @default(autoincrement())
+  timestamp   DateTime @default(now())
+  userId      Int
+  type        String   @db.VarChar(50)
+  description String   @db.Text
+  status      String   @db.VarChar(50)
+  ip          String   @db.VarChar(45)
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([timestamp])
+}
