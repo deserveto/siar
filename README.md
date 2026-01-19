@@ -64,7 +64,7 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 git clone https://github.com/deserveto/siar.git
-cd siar-dashboard
+cd siar
 ```
 
 ### 2. Install Dependencies
