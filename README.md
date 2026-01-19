@@ -63,7 +63,7 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/siar-dashboard.git
+git clone https://github.com/deserveto/siar.git
 cd siar-dashboard
 ```
 
